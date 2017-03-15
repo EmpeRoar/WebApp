@@ -1,0 +1,73 @@
+﻿<!doctype html>
+<html ng-app="carApp">
+
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>    
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.3.0.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+        angular.module('carApp', ['ngAnimate', 'ngSanitize', 'ui.bootstrap']);
+        var app = angular.module('carApp');
+        app.controller('carCtrl', function ($scope, $http, $uibModal) {
+            //$http.get('jobs.json').success(function(data) {//Uncomment
+            //$scope.data = data; Uncomment 
+
+            //Remove below line from code when you are using this in your project
+            $scope.data = {
+                "specs": [{
+                    "job-title": "TITLE",
+                    "job-apply": "applink",
+                    "job-body": "JOB BODY"
+                }]
+            }
+
+            $scope.open = function () {
+
+                var modalContent = $uibModal.open({
+                    templateUrl: 'careersTpl.html',
+                    controller: 'ModalInstanceCtrl',
+                    controllerAs: '$ctrl',
+                    resolve: {
+                        items: function () {
+                            return $scope.data;
+                        }
+                    }
+                })
+            }
+            //});//Uncomment
+        });
+
+        app.controller('ModalInstanceCtrl', function ($uibModalInstance, items, $scope) {
+            $scope.data = items;
+            console.log($scope.data);
+            $scope.selected = {
+                item: $scope.data.specs
+            };
+
+        });
+    </script>
+</head>
+
+<body>
+
+    <div ng-controller="carCtrl" class="modal-demo">
+        <script type="text/ng-template" id="careersTpl.html">
+            <div class="modal-header">
+                <h3>Lorem Ipsum</h3>
+            </div>
+            <div class="modal-body">
+                <p ng-repeat="(k,v) in data.specs">
+                    <span>Title: {{v["job-title"]}}<br /> </span>
+                    <span>Link: {{v["job-apply"]}}<br /> </span>
+                    <span>Body: {{v["job-body"]}}<br /> </span>
+                </p>
+            </div>
+        </script>
+        <button class="btn" ng-click="open()">Open</button>
+    </div>
+</body>
+
+</html>
